@@ -1,7 +1,6 @@
 import "../../App.css";
 import Tilt from "react-parallax-tilt";
 import Typewriter from "typewriter-effect";
-import heroImg from "../../images/updated-img.png";
 
 const Hero = () => {
   return (
@@ -48,12 +47,45 @@ const Hero = () => {
             glarePosition="bottom"
             gyroscope={true}
           >
-            <div className="hero-img bg-black rounded-full overflow-hidden w-[550px] h-[550px] max-md:w-[421px] max-md:h-[421px] max-sm:!w-[200px] max-sm:!h-[200px] flex justify-center items-center">
-              <img
-                className="max-md:w-full max-md:h-full object-contain w-[500px]  h-[500px]"
-                src={heroImg}
-                alt="dev-img"
-              />
+            <style>
+              {`
+                @keyframes spin-slow { 100% { transform: rotate(360deg); } }
+                @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+                @keyframes pulse-ring {
+                  0% { transform: scale(0.85); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); }
+                  70% { transform: scale(1); box-shadow: 0 0 0 30px rgba(0, 0, 0, 0); }
+                  100% { transform: scale(0.85); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+                }
+                .anim-circle-1 {
+                  position: absolute; inset: 8%; border-radius: 50%;
+                  border: 2px dashed rgba(0, 0, 0, 0.5);
+                  animation: spin-slow 20s linear infinite;
+                }
+                .anim-circle-2 {
+                  position: absolute; inset: 18%; border-radius: 50%;
+                  border: 3px solid rgba(0, 0, 0, 0.1); border-top-color: #000; border-bottom-color: #000;
+                  animation: spin-reverse 12s linear infinite;
+                }
+                .anim-circle-3 {
+                  position: absolute; inset: 28%; border-radius: 50%;
+                  border: 1px dotted rgba(0, 0, 0, 0.8);
+                  animation: spin-slow 25s linear infinite;
+                }
+                .anim-center-core {
+                  width: 28%; height: 28%; background: #000; border-radius: 50%;
+                  animation: pulse-ring 3s ease-in-out infinite;
+                  display: flex; justify-content: center; align-items: center;
+                  color: #fff; font-weight: 900; font-size: clamp(20px, 4vw, 42px);
+                  letter-spacing: 2px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+                  z-index: 10;
+                }
+              `}
+            </style>
+            <div className="hero-img bg-transparent rounded-full w-[550px] h-[550px] max-md:w-[421px] max-md:h-[421px] max-sm:!w-[200px] max-sm:!h-[200px] flex justify-center items-center relative overflow-hidden">
+              <div className="anim-circle-1"></div>
+              <div className="anim-circle-2"></div>
+              <div className="anim-circle-3"></div>
+              <div className="anim-center-core">AI</div>
             </div>
           </Tilt>
         </div>
