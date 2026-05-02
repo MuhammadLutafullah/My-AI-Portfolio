@@ -121,42 +121,91 @@ User question: ${input}`;
 
   return (
     <>
-      <button onClick={() => setIsOpen(!isOpen)} style={{
+      <style>
+        {`
+          @keyframes float-chat {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+          }
+          @keyframes pulse-shadow-bw {
+            0% { box-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 0 0 rgba(255, 255, 255, 0); }
+          }
+          .bw-chat-btn {
+            animation: float-chat 3s ease-in-out infinite, pulse-shadow-bw 2s infinite;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #000;
+            color: #fff;
+            border: 2px solid #333;
+          }
+          .bw-chat-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+            animation: pulse-shadow-bw 2s infinite; 
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+          }
+          .bw-chat-icon {
+            display: inline-block;
+            transition: transform 0.3s ease;
+          }
+          .bw-chat-btn:hover .bw-chat-icon {
+            transform: rotate(15deg) scale(1.2);
+          }
+          
+          /* Custom scrollbar for dark theme */
+          .dark-chat-scroll::-webkit-scrollbar {
+            width: 6px;
+          }
+          .dark-chat-scroll::-webkit-scrollbar-track {
+            background: #111;
+          }
+          .dark-chat-scroll::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 3px;
+          }
+          .dark-chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: #666;
+          }
+        `}
+      </style>
+      <button className="bw-chat-btn" onClick={() => setIsOpen(!isOpen)} style={{
         position: 'fixed', bottom: '20px', right: '20px',
-        background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-        color: 'white', border: 'none', borderRadius: '50%',
-        width: '60px', height: '60px', fontSize: '28px', cursor: 'pointer',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.2)', zIndex: 1000,
-        display: 'flex', alignItems: 'center', justifyContent: 'center'
-      }}>💬</button>
+        borderRadius: '50%', width: '60px', height: '60px', fontSize: '28px', cursor: 'pointer',
+        zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'
+      }}>
+        <span className="bw-chat-icon">💬</span>
+      </button>
 
       {isOpen && (
         <div style={{
           position: 'fixed', bottom: '90px', right: '20px', width: '380px',
-          height: '550px', backgroundColor: 'white', borderRadius: '16px',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)', display: 'flex',
-          flexDirection: 'column', zIndex: 1000, border: '1px solid #e5e7eb'
+          height: '550px', backgroundColor: '#0a0a0a', borderRadius: '16px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.8)', display: 'flex',
+          flexDirection: 'column', zIndex: 1000, border: '1px solid #333'
         }}>
           <div style={{
-            background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+            background: '#000', borderBottom: '1px solid #333',
             color: 'white', padding: '15px', borderRadius: '16px 16px 0 0',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center'
           }}>
             <div>
               <h3 style={{ margin: 0, fontWeight: 'bold' }}>Muhammad Lutafullah</h3>
-              <p style={{ margin: 0, fontSize: '12px', opacity: 0.9 }}>Junior AI Developer</p>
+              <p style={{ margin: 0, fontSize: '12px', color: '#aaa' }}>Junior AI Developer</p>
             </div>
             <button onClick={() => setIsOpen(false)} style={{
-              background: 'none', border: 'none', color: 'white', fontSize: '20px', cursor: 'pointer'
+              background: 'none', border: 'none', color: 'white', fontSize: '20px', cursor: 'pointer', opacity: 0.7
             }}>✕</button>
           </div>
 
-          <div style={{ flex: 1, overflowY: 'auto', padding: '15px', backgroundColor: '#f9fafb' }}>
+          <div className="dark-chat-scroll" style={{ flex: 1, overflowY: 'auto', padding: '15px', backgroundColor: '#111' }}>
             {messages.length === 0 && (
-              <div style={{ textAlign: 'center', color: '#6b7280', marginTop: '50px' }}>
-                <div style={{ fontSize: '48px' }}>👋</div>
-                <p style={{ fontWeight: 'bold', marginTop: '10px' }}>Hi! I'm Muhammad's AI Assistant</p>
-                <div style={{ fontSize: '12px', marginTop: '20px', color: '#9ca3af' }}>
+              <div style={{ textAlign: 'center', color: '#888', marginTop: '50px' }}>
+                <div style={{ fontSize: '48px' }}>🤖</div>
+                <p style={{ fontWeight: 'bold', marginTop: '10px', color: '#fff' }}>Hi! I'm Muhammad's AI Assistant</p>
+                <div style={{ fontSize: '12px', marginTop: '20px', color: '#666' }}>
                   Ask me about:<br/>💻 Skills<br/>🚀 Experience<br/>📁 Projects<br/>📞 Contact
                 </div>
               </div>
@@ -168,24 +217,24 @@ User question: ${input}`;
               }}>
                 <div style={{
                   maxWidth: '80%', padding: '10px', borderRadius: '12px',
-                  backgroundColor: msg.role === 'user' ? '#3b82f6' : 'white',
-                  color: msg.role === 'user' ? 'white' : '#1f2937',
-                  border: msg.role === 'user' ? 'none' : '1px solid #e5e7eb',
+                  backgroundColor: msg.role === 'user' ? '#fff' : '#222',
+                  color: msg.role === 'user' ? '#000' : '#fff',
+                  border: msg.role === 'user' ? 'none' : '1px solid #333',
                   whiteSpace: 'pre-wrap'
                 }}>{msg.content}</div>
               </div>
             ))}
-            {isLoading && <div style={{ padding: '10px' }}>Thinking...</div>}
+            {isLoading && <div style={{ padding: '10px', color: '#aaa' }}>Thinking...</div>}
           </div>
 
-          <div style={{ padding: '15px', borderTop: '1px solid #e5e7eb', backgroundColor: 'white', borderRadius: '0 0 16px 16px', display: 'flex', gap: '10px' }}>
+          <div style={{ padding: '15px', borderTop: '1px solid #333', backgroundColor: '#0a0a0a', borderRadius: '0 0 16px 16px', display: 'flex', gap: '10px' }}>
             <input type="text" value={input} onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               placeholder="Ask about skills, experience, projects..."
-              style={{ flex: 1, padding: '10px', border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none' }}
+              style={{ flex: 1, padding: '10px', border: '1px solid #333', borderRadius: '8px', outline: 'none', backgroundColor: '#222', color: '#fff' }}
             />
             <button onClick={sendMessage} disabled={isLoading}
-              style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', opacity: isLoading ? 0.5 : 1 }}>
+              style={{ background: '#fff', color: '#000', fontWeight: 'bold', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', opacity: isLoading ? 0.5 : 1 }}>
               Send
             </button>
           </div>
