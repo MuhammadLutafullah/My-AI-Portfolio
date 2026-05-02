@@ -70,7 +70,6 @@ Junior AI Developer with hands-on experience in building RAG-based chatbots, emb
 🎓 EDUCATION:
 • Bachelor of Sciences in Information Technology
   Government College University Faisalabad (2019 - 2023)
-
 `;
 
 const Chatbot = () => {
@@ -78,120 +77,61 @@ const Chatbot = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [apiKeyError, setApiKeyError] = useState(false);
-
-  // Debug and check API key on load - VITE version
-  useEffect(() => {
-    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-    console.log("=== API KEY DEBUG (VITE) ===");
-    console.log("API Key exists:", !!apiKey);
-    console.log("API Key first 10 chars:", apiKey?.substring(0, 15));
-    
-    if (!apiKey) {
-      console.error("❌ API KEY NOT FOUND! Check .env file with VITE_ prefix");
-      setApiKeyError(true);
-    } else if (!apiKey.startsWith('sk-or-v1')) {
-      console.error("❌ API KEY format looks wrong!");
-      setApiKeyError(true);
-    } else {
-      console.log("✅ API Key looks good!");
-      setApiKeyError(false);
-    }
-  }, []);
+  const [serverError, setServerError] = useState(false);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
-    // 🔴 FIXED: Vite mein import.meta.env use karo 🔴
-    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-    
-    // Check if API key exists before sending
-    if (!apiKey) {
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: '❌ API key is not configured. Please check the .env file and restart the app.\n\n📞 Meanwhile, you can contact Muhammad directly at:\n• Phone/WhatsApp: +92 3027899450\n• Email: muhammad.fit450@gmail.com' 
-      }]);
-      return;
-    }
 
     const userMessage = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
+    setServerError(false);
 
     try {
-      console.log("Sending request with API key:", apiKey.substring(0, 15) + "...");
+      console.log("Sending request to serverless function...");
       
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      // ✅ FIXED: API key directly use nahi kar rahe - serverless function call kar rahe
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'Muhammad Lutafullah Portfolio'
         },
-        body: JSON.stringify({
-          model: 'meta-llama/llama-3-8b-instruct',
-          messages: [
-            {
-              role: 'system',
-              content: `You are Muhammad Lutafullah's official AI Assistant. Answer questions STRICTLY based on his CV/Resume provided below.
-
-${CV_DATA}
-
-📋 IMPORTANT RULES:
-1. ONLY answer based on the CV content above - DO NOT make up information
-2. For CONTACT info: Provide phone (+92 3027899450), email (muhammad.fit450@gmail.com), portfolio and GitHub links
-3. For SKILLS: List from the Technical Skills section (AI, Frontend, Deployment)
-4. For EXPERIENCE: Share from Professional Experience section
-5. For PROJECTS: Mention the ATS System, Portfolio Chatbot, and RAG-based chatbot
-6. If information is NOT in the CV, say: "This information is not available in Muhammad's resume."
-7. Be friendly, professional, and enthusiastic
-8. Keep responses clear and concise`
-            },
-            {
-              role: 'user',
-              content: input
-            }
-          ],
-          temperature: 0.5,
-          max_tokens: 600
-        })
+        body: JSON.stringify({ 
+          message: input,
+          cvData: CV_DATA 
+        }),
       });
 
       console.log("Response status:", response.status);
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("API Error Response:", errorText);
-        
-        if (response.status === 401) {
-          throw new Error("Invalid API key. Please check your OpenRouter API key.");
-        } else if (response.status === 429) {
-          throw new Error("Rate limit exceeded. Please try again in a minute.");
-        } else {
-          throw new Error(`API Error ${response.status}: ${errorText.substring(0, 100)}`);
-        }
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Server error: ${response.status}`);
       }
 
       const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       const botMessage = { 
         role: 'assistant', 
-        content: data.choices[0].message.content 
+        content: data.choices?.[0]?.message?.content || "Sorry, I couldn't process your request."
       };
       setMessages(prev => [...prev, botMessage]);
       
     } catch (error) {
       console.error('Full Error:', error);
+      setServerError(true);
       
       let errorMessage = 'Sorry, I am having trouble connecting. ';
       
-      if (error.message.includes('API key') || error.message.includes('401')) {
-        errorMessage = '🔑 Invalid or missing API key. Please check your OpenRouter API key in the .env file and restart the app.\n\n';
+      if (error.message.includes('fetch') || error.message.includes('network')) {
+        errorMessage = '🌐 Network error. Please check your internet connection.\n\n';
       } else if (error.message.includes('429')) {
         errorMessage = '⏰ Rate limit exceeded. Please wait a minute before trying again.\n\n';
-      } else if (error.message.includes('fetch')) {
-        errorMessage = '🌐 Network error. Please check your internet connection.\n\n';
       } else {
         errorMessage = '⚠️ An error occurred. Please try again later.\n\n';
       }
@@ -280,7 +220,7 @@ ${CV_DATA}
             padding: '15px',
             backgroundColor: '#f9fafb'
           }}>
-            {apiKeyError && (
+            {serverError && (
               <div style={{
                 backgroundColor: '#fee2e2',
                 color: '#dc2626',
@@ -289,7 +229,7 @@ ${CV_DATA}
                 marginBottom: '15px',
                 fontSize: '12px'
               }}>
-                ⚠️ API key not configured! Check .env file with VITE_ prefix
+                ⚠️ Server connection issue. Using offline mode - contact info available below.
               </div>
             )}
             
