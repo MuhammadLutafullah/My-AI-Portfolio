@@ -13,7 +13,7 @@ const Hero = () => {
               Hello, I'm Muhammad Lutaf Ullah,{" "}
               <Typewriter
                 options={{
-                  strings: ["Frontend Developer","Junior AI Developer","React Developer",],
+                  strings: ["Junior AI Developer", "Frontend Developer", "RAG Chatbot Specialist", "React Developer"],
                   autoStart: true,
                   loop: true,
                   deleteSpeed: 50,
@@ -22,12 +22,7 @@ const Hero = () => {
             </p>
 
             <p className="parallex-desc py-[27px] max-md:py-[15px] font-medium font-normal text-[18px] leading-[27px] text-[#555555] max-xxsm:text-[16px]">
-              I use parallax animation on my hero image and specialize in
-              turning ideas into reality. With 4 years of pure experience as a
-              frontend developer, I am skilled in customizing and editing
-              Next.js and React libraries to create pixel-perfect, fully
-              responsive websites. My past projects showcase seamless
-              adaptability and exceptional performance across all devices.
+              Junior AI Developer with hands-on experience in building RAG-based chatbots, embeddings, and intelligent automation systems. Strong foundation in frontend development with React and modern UI tools, enabling seamless integration of AI-powered features into scalable web applications. Skilled in FastAPI, React, and modern web technologies.
             </p>
             <div className="action-otr flex max-sm:justify-center">
               <a

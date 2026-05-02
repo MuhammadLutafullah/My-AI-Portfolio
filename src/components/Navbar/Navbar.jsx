@@ -99,14 +99,14 @@ const Navbar = ({
                   About
                 </a>
               </li>
-              <li className="nav-li">
+              {/* <li className="nav-li">
                 <a
                   onClick={onWhyClick}
                   className="font-medium font-normal text-[18px] leading-[86px] cursor-pointer"
                 >
                   Why Me
                 </a>
-              </li>
+              </li> */}
               <li className="nav-li">
                 <a
                   onClick={onPortfolioClick}
@@ -184,14 +184,14 @@ const Navbar = ({
               About
             </a>
           </li>
-          <li onClick={() => handleMobileNav(onWhyClick)} className="mb-4">
+          {/* <li onClick={() => handleMobileNav(onWhyClick)} className="mb-4">
             <a
               onClick={onWhyClick}
               className="text-[18px] font-medium cursor-pointer"
             >
               Why Me
             </a>
-          </li>
+          </li> */}
           <li
             onClick={() => handleMobileNav(onPortfolioClick)}
             className="mb-4"

@@ -11,6 +11,7 @@ import Projects from "./components/Projects/Projects";
 import Resume from "./components/Resume/Resume";
 import Slider360 from "./components/Slider360/Slider360";
 import StackSlider from "./components/StackSlider/StackSlider";
+import Chatbot from "./components/Chatbot/Chatbot";
 // ... other imports
 
 function App() {
@@ -35,8 +36,9 @@ function App() {
         onAboutClick={() => scrollToSection(aboutRef)}
         onPortfolioClick={() => scrollToSection(portfolioRef)}
         onContactClick={() => scrollToSection(contactRef)}
-        onWhyClick={() => scrollToSection(whyRef)}
+        // onWhyClick={() => scrollToSection(whyRef)}
       />
+      <Chatbot/>
       <div ref={homeRef} id="home">
         <Hero />
       </div>
@@ -44,9 +46,9 @@ function App() {
       <div ref={aboutRef} id="about">
         <Resume />
       </div>
-      <div ref={whyRef} id="why">
+      {/* <div ref={whyRef} id="why">
         <Slider360 />
-      </div>
+      </div> */}
 
       <div ref={portfolioRef} id="portfolio">
         <Projects />
