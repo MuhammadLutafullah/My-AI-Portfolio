@@ -1,0 +1,19 @@
+# Environment variables - IMPORTANT! Don't commit .env
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build outputs  
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
