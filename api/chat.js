@@ -5,20 +5,22 @@ export default async function handler(req, res) {
 
   const { message, cvData } = req.body;
 
-  // Server-side API key - browser nahi dekh sakta
   const apiKey = process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) {
     return res.status(500).json({ error: 'API key not configured' });
   }
 
-  const fullPrompt = `
-You are Muhammad Lutafullah's official AI Assistant. Answer based on his CV.
+  const fullPrompt = `You are Muhammad Lutafullah's AI assistant. Answer STRICTLY based on this CV:
 
-${cvData || ''}
+${cvData}
 
-User question: ${message}
-`;
+RULES:
+1. For CONTACT: Phone +92 3027899450, Email muhammad.fit450@gmail.com
+2. For SKILLS: List from Technical Skills
+3. If info not in CV: Say "Not in my CV"
+
+Question: ${message}`;
 
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -36,6 +38,11 @@ User question: ${message}
     });
 
     const data = await response.json();
+    
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data.error?.message || 'API error' });
+    }
+
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ error: error.message });
