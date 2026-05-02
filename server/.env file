@@ -1,0 +1,5 @@
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SENDER_EMAIL=your-email@gmail.com
+SENDER_PASSWORD=your-app-specific-password
+RECIPIENT_EMAIL=your-receiving-email@gmail.com

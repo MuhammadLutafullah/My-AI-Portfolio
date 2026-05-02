@@ -1,0 +1,29 @@
+.box-otr {
+  /* flex: 1; */
+  transition: .4s;
+  border-radius: 12px;
+}
+.box-otr:hover{
+  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.1);
+}
+.box-otr:hover .box-inr{
+  border: 1px solid transparent;
+}
+.box-inr{
+  border: 1px solid #e5e5e5;
+  /* padding: 28px 28px 20px 28px; */
+  border-radius: 12px;
+  transition: .4s;
+}
+.parallax-effect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  transform-style: preserve-3d;
+}
+
+.project-img {
+  width: 100%;
+  border-radius: 12px;
+}

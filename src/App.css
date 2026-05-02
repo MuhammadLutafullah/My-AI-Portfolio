@@ -1,0 +1,15 @@
+.action-inr:hover .btn-default-txt{
+
+    transform: translateY(-50px);
+}
+.action-inr:hover .btn-hover-txt{
+
+    transform: translateY(-40px);
+}
+.btn-default-txt{
+transition: .4s;
+}
+
+.btn-hover-txt{
+    transition: .4s;
+}
