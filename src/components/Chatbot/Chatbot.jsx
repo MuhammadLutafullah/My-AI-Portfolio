@@ -169,8 +169,36 @@ User question: ${input}`;
           .dark-chat-scroll::-webkit-scrollbar-thumb:hover {
             background: #666;
           }
+
+          .chat-tooltip {
+            position: fixed;
+            bottom: 35px;
+            right: 90px;
+            background: #fff;
+            color: #000;
+            padding: 8px 14px;
+            border-radius: 20px 20px 0 20px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 1000;
+            pointer-events: none;
+            animation: bounce-tooltip 2s infinite;
+          }
+
+          @keyframes bounce-tooltip {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+          }
         `}
       </style>
+
+      {!isOpen && (
+        <div className="chat-tooltip">
+          Talk to me! 👋
+        </div>
+      )}
+
       <button className="bw-chat-btn" onClick={() => setIsOpen(!isOpen)} style={{
         position: 'fixed', bottom: '20px', right: '20px',
         borderRadius: '50%', width: '60px', height: '60px', fontSize: '28px', cursor: 'pointer',
