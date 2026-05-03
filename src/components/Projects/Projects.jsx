@@ -15,7 +15,7 @@ const Projects = () => {
       title: "Personal ATS System",
       description: "AI-powered resume screening system that matches resumes with job descriptions using RAG technology. Provides percentage match analysis and missing keywords identification.",
       imgSrc: ats,
-      liveLink: "https://ai-ats-system-cqx6tj7snzuibdsxtqyzs5.streamlit.app/",
+      liveLink: "https://resume-genius-ai-three.vercel.app/",
       tags: ["Python", "Streamlit", "RAG", "OpenRouter API", "PyPDF2"],
       category: "ai",
     },
